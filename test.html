@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spend Mask Money - Be Elon Musk for a Day</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        .category-section {
+            display: none;
+        }
+        .category-section.active {
+            display: block;
+        }
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .receipt {
+            font-family: 'Courier New', monospace;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 min-h-screen text-white">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="mb-8 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500">
+                Spend Mask Money
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-200">You are now Elon Musk. Spend your $260 billion wisely!</p>
+        </header>
+
+        <!-- Balance Display -->
+        <div class="bg-black bg-opacity-50 rounded-xl p-6 mb-8 border-2 border-yellow-400 floating">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <h2 class="text-2xl font-semibold text-yellow-400">Your Current Balance</h2>
+                    <p class="text-3xl md:text-5xl font-bold" id="balance">$260,000,000,000</p>
+                </div>
+                <div class="flex space-x-4">
+                    <button onclick="resetBalance()" class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-bold transition">
+                        <i class="fas fa-sync-alt mr-2"></i> Reset
+                    </button>
+                    <button onclick="showReceipt()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-bold transition">
+                        <i class="fas fa-receipt mr-2"></i> View Receipt
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="mb-8 overflow-x-auto">
+            <div class="flex space-x-2 pb-2">
+                <button onclick="showCategory('cars')" class="category-btn active bg-gradient-to-r from-red-500 to-orange-500 px-6 py-3 rounded-lg font-bold whitespace-nowrap">
+                    <i class="fas fa-car mr-2"></i> Cars
+                </button>
+                <button onclick="showCategory('aircraft')" class="category-btn bg-gradient-to-r from-blue-500 to-cyan-500 px-6 py-3 rounded-lg font-bold whitespace-nowrap">
+                    <i class="fas fa-plane mr-2"></i> Aircraft
+                </button>
+                <button onclick="showCategory('spacecraft')" class="category-btn bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-3 rounded-lg font-bold whitespace-nowrap">
+                    <i class="fas fa-rocket mr-2"></i> Spacecraft
+                </button>
+                <button onclick="showCategory('buildings')" class="category-btn bg-gradient-to-r from-green-500 to-emerald-500 px-6 py-3 rounded-lg font-bold whitespace-nowrap">
+                    <i class="fas fa-building mr-2"></i> Buildings
+                </button>
+                <button onclick="showCategory('tech')" class="category-btn bg-gradient-to-r from-yellow-500 to-amber-500 px-6 py-3 rounded-lg font-bold whitespace-nowrap">
+                    <i class="fas fa-robot mr-2"></i> Tech & Machines
+                </button>
+                <button onclick="showCategory('franchises')" class="category-btn bg-gradient-to-r from-indigo-500 to-blue-500 px-6 py-3 rounded-lg font-bold whitespace-nowrap">
+                    <i class="fas fa-store mr-2"></i> Franchises
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Cars Section -->
+            <section id="cars" class="category-section active">
+                <h2 class="text-3xl font-bold mb-6 text-center"><i class="fas fa-car mr-2"></i> Luxury Cars Collection</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <!-- Car items will be inserted here by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Aircraft Section -->
+            <section id="aircraft" class="category-section">
+                <h2 class="text-3xl font-bold mb-6 text-center"><i class="fas fa-plane mr-2"></i> Private Aircraft</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <!-- Aircraft items will be inserted here by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Spacecraft Section -->
+            <section id="spacecraft" class="category-section">
+                <h2 class="text-3xl font-bold mb-6 text-center"><i class="fas fa-rocket mr-2"></i> Spacecraft & Rockets</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <!-- Spacecraft items will be inserted here by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Buildings Section -->
+            <section id="buildings" class="category-section">
+                <h2 class="text-3xl font-bold mb-6 text-center"><i class="fas fa-building mr-2"></i> Luxury Real Estate</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <!-- Building items will be inserted here by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Tech Section -->
+            <section id="tech" class="category-section">
+                <h2 class="text-3xl font-bold mb-6 text-center"><i class="fas fa-robot mr-2"></i> Tech & Machines</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <!-- Tech items will be inserted here by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Franchises Section -->
+            <section id="franchises" class="category-section">
+                <h2 class="text-3xl font-bold mb-6 text-center"><i class="fas fa-store mr-2"></i> Business Franchises</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <!-- Franchise items will be inserted here by JavaScript -->
+                </div>
+            </section>
+        </main>
+
+        <!-- Receipt Modal -->
+        <div id="receiptModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
+            <div class="bg-white text-black rounded-lg p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold">Your Spending Receipt</h2>
+                    <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="receipt mb-4">
+                    <div class="text-center mb-4">
+                        <h3 class="text-xl font-bold">Spend MASK MONEY</h3>
+                        <p>123 Billionaire Lane, Silicon Valley, CA</p>
+                        <p>Date: <span id="receipt-date"></span></p>
+                    </div>
+                    <hr class="border-black my-2">
+                    <div id="receipt-items" class="mb-2">
+                        <!-- Items will be inserted here -->
+                    </div>
+                    <hr class="border-black my-2">
+                    <div class="text-right">
+                        <p class="font-bold">TOTAL SPENT: <span id="receipt-total">$0</span></p>
+                        <p class="font-bold">REMAINING BALANCE: <span id="receipt-balance">$260,000,000,000</span></p>
+                    </div>
+                </div>
+                <div class="flex justify-between mt-4">
+                    <button onclick="printReceipt()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                        <i class="fas fa-print mr-2"></i> Print
+                    </button>
+                    <button onclick="downloadReceipt()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded">
+                        <i class="fas fa-download mr-2"></i> Download
+                    </button>
+                    <button onclick="shareReceipt()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+                        <i class="fas fa-share-alt mr-2"></i> Share
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initial balance
+        let balance = 260000000000;
+        let purchasedItems = [];
+
+        // Data for all items
+        const itemsData = {
+           cars: [
+        { name: "Tesla Roadster", price: 200000, image: "fotos/tesla-roadster.png", owned: 0 },
+        { name: "Lamborghini Aventador", price: 417826, image: "fotos/lamborghini-aventador.png", owned: 0 },
+        { name: "Bugatti Chiron", price: 3300000, image: "fotos/bugatti-chiron.png", owned: 0 },
+        { name: "Rolls-Royce Phantom", price: 457750, image: "fotos/rolls-royce-phantom.png", owned: 0 },
+        { name: "Ferrari SF90 Stradale", price: 625000, image: "fotos/ferrari-sf90.png", owned: 0 },
+        { name: "Porsche 911 Turbo S", price: 203500, image: "fotos/porsche-911.png", owned: 0 },
+        { name: "McLaren P1", price: 1150000, image: "fotos/mclaren-p1.png", owned: 0 },
+        { name: "Aston Martin Valkyrie", price: 3200000, image: "fotos/aston-martin-valkyrie.png", owned: 0 },
+        { name: "Koenigsegg Jesko", price: 3000000, image: "fotos/koenigsegg-jesko.png", owned: 0 },
+        { name: "Pagani Huayra", price: 3400000, image: "fotos/pagani-huayra.png", owned: 0 },
+        { name: "Mercedes-AMG One", price: 2720000, image: "fotos/mercedes-amg-one.png", owned: 0 },
+        { name: "Rimac Nevera", price: 2400000, image: "fotos/rimac-nevera.png", owned: 0 },
+        { name: "Lotus Evija", price: 2300000, image: "fotos/lotus-evija.png", owned: 0 },
+        { name: "Bentley Continental GT", price: 218900, image: "fotos/bentley-continental-gt.png", owned: 0 },
+        { name: "Audi R8", price: 148700, image: "fotos/audi-r8.png", owned: 0 },
+        { name: "Lexus LFA", price: 375000, image: "fotos/lexus-lfa.png", owned: 0 },
+        { name: "Jaguar XJ220", price: 600000, image: "fotos/jaguar-xj220.png", owned: 0 },
+        { name: "Ford GT", price: 500000, image: "fotos/ford-gt.png", owned: 0 },
+        { name: "Chevrolet Corvette Z06", price: 85000, image: "fotos/chevrolet-corvette-z06.png", owned: 0 },
+        { name: "Dodge Viper ACR", price: 120000, image: "fotos/dodge-viper-acr.png", owned: 0 }
+    ],
+    aircraft: [
+        { name: "Boeing 747-8", price: 418400000, image: "fotos/boeing-747-8.png", owned: 0 },
+        { name: "Gulfstream G700", price: 75000000, image: "fotos/gulfstream-g700.png", owned: 0 },
+        { name: "Bombardier Global 7500", price: 73000000, image: "fotos/bombardier-global-7500.png", owned: 0 },
+        { name: "Dassault Falcon 8X", price: 58000000, image: "fotos/dassault-falcon-8x.png", owned: 0 },
+        { name: "Embraer Lineage 1000E", price: 53000000, image: "fotos/embraer-lineage-1000e.png", owned: 0 },
+        { name: "Cessna Citation Longitude", price: 27000000, image: "fotos/cessna-citation-longitude.png", owned: 0 },
+        { name: "Airbus A380", price: 445600000, image: "fotos/airbus-a380.png", owned: 0 },
+        { name: "Boeing Business Jet", price: 150000000, image: "fotos/boeing-business-jet.png", owned: 0 },
+        { name: "Pilatus PC-24", price: 9000000, image: "fotos/pilatus-pc-24.png", owned: 0 },
+        { name: "HondaJet Elite", price: 5250000, image: "fotos/hondajet-elite.png", owned: 0 },
+        { name: "Cirrus Vision Jet", price: 2000000, image: "fotos/cirrus-vision-jet.png", owned: 0 },
+        { name: "Beechcraft King Air 350i", price: 8000000, image: "fotos/beechcraft-king-air-350i.png", owned: 0 },
+        { name: "Piper M600", price: 2500000, image: "fotos/piper-m600.png", owned: 0 },
+        { name: "Daher TBM 940", price: 4000000, image: "fotos/daher-tbm-940.png", owned: 0 },
+        { name: "Cessna 172 Skyhawk", price: 400000, image: "fotos/cessna-172-skyhawk.png", owned: 0 },
+        { name: "Piper PA-28 Cherokee", price: 300000, image: "fotos/piper-pa-28-cherokee.png", owned: 0 },
+        { name: "Diamond DA62", price: 1500000, image: "fotos/diamond-da62.png", owned: 0 },
+        { name: "Mooney M20", price: 800000, image: "fotos/mooney-m20.png", owned: 0 },
+        { name: "Bell 505 Jet Ranger X", price: 1500000, image: "fotos/bell-505-jet-ranger-x.png", owned: 0 },
+        { name: "Robinson R44", price: 500000, image: "fotos/robinson-r44.png", owned: 0 }
+    ],
+    spacecraft: [
+        { name: "Falcon 9 Rocket", price: 67000000, image: "fotos/falcon-9-rocket.png", owned: 0 },
+        { name: "Falcon Heavy Rocket", price: 150000000, image: "fotos/falcon-heavy-rocket.png", owned: 0 },
+        { name: "Starship", price: 500000000, image: "fotos/starship.png", owned: 0 },
+        { name: "Dragon Capsule", price: 120000000, image: "fotos/dragon-capsule.png", owned: 0 },
+        { name: "Soyuz Spacecraft", price: 90000000, image: "fotos/soyuz-spacecraft.png", owned: 0 },
+        { name: "Orion Spacecraft", price: 2000000000, image: "fotos/orion-spacecraft.png", owned: 0 },
+        { name: "James Webb Space Telescope", price: 10000000000, image: "fotos/james-webb-space-telescope.png", owned: 0 },
+        { name: "Hubble Space Telescope", price: 2500000000, image: "fotos/hubble-space-telescope.png", owned: 0 },
+        { name: "Voyager Spacecraft", price: 865000000, image: "fotos/voyager-spacecraft.png", owned: 0 },
+        { name: "Mars Rover Perseverance", price: 2700000000, image: "fotos/mars-rover-perseverance.png", owned: 0 },
+        { name: "International Space Station", price: 150000000000, image: "fotos/international-space-station.png", owned: 0 },
+        { name: "Saturn V Rocket", price: 185000000, image: "fotos/saturn-v-rocket.png", owned: 0 },
+        { name: "Space Shuttle", price: 450000000, image: "fotos/space-shuttle.png", owned: 0 },
+        { name: "New Shepard", price: 75000000, image: "fotos/new-shepard.png", owned: 0 },
+        { name: "New Glenn", price: 250000000, image: "fotos/new-glenn.png", owned: 0 },
+        { name: "Vega Rocket", price: 40000000, image: "fotos/vega-rocket.png", owned: 0 },
+        { name: "Ariane 5", price: 150000000, image: "fotos/ariane-5.png", owned: 0 },
+        { name: "Electron Rocket", price: 7500000, image: "fotos/electron-rocket.png", owned: 0 },
+        { name: "Atlas V Rocket", price: 110000000, image: "fotos/atlas-v-rocket.png", owned: 0 },
+        { name: "Delta IV Heavy", price: 350000000, image: "fotos/delta-iv-heavy.png", owned: 0 }
+    ],
+    buildings: [
+        { name: "Buckingham Palace", price: 1500000000, image: "fotos/buckingham-palace.png", owned: 0 },
+        { name: "The White House", price: 397800000, image: "fotos/white-house.png", owned: 0 },
+        { name: "Burj Khalifa", price: 1500000000, image: "fotos/burj-khalifa.png", owned: 0 },
+        { name: "One Hyde Park Penthouse", price: 237000000, image: "fotos/one-hyde-park-penthouse.png", owned: 0 },
+        { name: "Versailles Palace", price: 5000000000, image: "fotos/versailles-palace.png", owned: 0 },
+        { name: "Hearst Castle", price: 191000000, image: "fotos/hearst-castle.png", owned: 0 },
+        { name: "Antilia (Mumbai)", price: 2000000000, image: "fotos/antilia-mumbai.png", owned: 0 },
+        { name: "The Pinnacle (London)", price: 350000000, image: "fotos/pinnacle-london.png", owned: 0 },
+        { name: "Villa Leopolda", price: 750000000, image: "fotos/villa-leopolda.png", owned: 0 },
+        { name: "The Odeon Tower Penthouse", price: 330000000, image: "fotos/odeon-tower-penthouse.png", owned: 0 },
+        { name: "Empire State Building", price: 2500000000, image: "fotos/empire-state-building.png", owned: 0 },
+        { name: "The Pentagon", price: 830000000, image: "fotos/pentagon.png", owned: 0 },
+        { name: "Sydney Opera House", price: 102000000, image: "fotos/sydney-opera-house.png", owned: 0 },
+        { name: "The Shard", price: 1500000000, image: "fotos/shard.png", owned: 0 },
+        { name: "Taipei 101", price: 1800000000, image: "fotos/taipei-101.png", owned: 0 },
+        { name: "Petronas Towers", price: 1600000000, image: "fotos/petronas-towers.png", owned: 0 },
+        { name: "The Louvre", price: 3500000000, image: "fotos/louvre.png", owned: 0 },
+        { name: "Neuschwanstein Castle", price: 1500000000, image: "fotos/neuschwanstein-castle.png", owned: 0 },
+        { name: "Sagrada Familia", price: 375000000, image: "fotos/sagrada-familia.png", owned: 0 },
+        { name: "The Colosseum", price: 790000000, image: "fotos/colosseum.png", owned: 0 }
+    ],
+    tech: [
+        { name: "Tesla Optimus Robot", price: 20000, image: "fotos/tesla-optimus-robot.png", owned: 0 },
+        { name: "Boston Dynamics Atlas", price: 150000, image: "fotos/boston-dynamics-atlas.png", owned: 0 },
+        { name: "Vending Machine", price: 5000, image: "fotos/vending-machine.png", owned: 0 },
+        { name: "Bitcoin ATM", price: 8000, image: "fotos/bitcoin-atm.png", owned: 0 },
+        { name: "Industrial 3D Printer", price: 250000, image: "fotos/industrial-3d-printer.png", owned: 0 },
+        { name: "Quantum Computer", price: 15000000, image: "fotos/quantum-computer.png", owned: 0 },
+        { name: "Supercomputer", price: 200000000, image: "fotos/supercomputer.png", owned: 0 },
+        { name: "MRI Machine", price: 3000000, image: "fotos/mri-machine.png", owned: 0 },
+        { name: "CT Scanner", price: 2500000, image: "fotos/ct-scanner.png", owned: 0 },
+        { name: "Industrial Robot Arm", price: 50000, image: "fotos/industrial-robot-arm.png", owned: 0 },
+        { name: "Autonomous Drone", price: 15000, image: "fotos/autonomous-drone.png", owned: 0 },
+        { name: "Self-Driving Car", price: 75000, image: "fotos/self-driving-car.png", owned: 0 },
+        { name: "Holographic Display", price: 45000, image: "fotos/holographic-display.png", owned: 0 },
+        { name: "Neuralink Device", price: 10000, image: "fotos/neuralink-device.png", owned: 0 },
+        { name: "SpaceX Starlink Terminal", price: 500, image: "fotos/spacex-starlink-terminal.png", owned: 0 },
+        { name: "Tesla Powerwall", price: 7000, image: "fotos/tesla-powerwall.png", owned: 0 },
+        { name: "Solar Roof", price: 42000, image: "fotos/solar-roof.png", owned: 0 },
+        { name: "Hyperloop Pod", price: 250000, image: "fotos/hyperloop-pod.png", owned: 0 },
+        { name: "Vertical Farm", price: 5000000, image: "fotos/vertical-farm.png", owned: 0 },
+        { name: "AI Supercomputer Cluster", price: 50000000, image: "fotos/ai-supercomputer-cluster.png", owned: 0 }
+    ],
+    franchises: [
+        { name: "McDonald's Franchise", price: 1000000, image: "fotos/mcdonalds-franchise.png", owned: 0 },
+        { name: "Starbucks Franchise", price: 315000, image: "fotos/starbucks-franchise.png", owned: 0 },
+        { name: "Subway Franchise", price: 150000, image: "fotos/subway-franchise.png", owned: 0 },
+        { name: "Pizza Hut Franchise", price: 350000, image: "fotos/pizza-hut-franchise.png", owned: 0 },
+        { name: "KFC Franchise", price: 1450000, image: "fotos/kfc-franchise.png", owned: 0 },
+        { name: "Burger King Franchise", price: 300000, image: "fotos/burger-king-franchise.png", owned: 0 },
+        { name: "Domino's Franchise", price: 150000, image: "fotos/dominos-franchise.png", owned: 0 },
+        { name: "Taco Bell Franchise", price: 1500000, image: "fotos/taco-bell-franchise.png", owned: 0 },
+        { name: "Dunkin' Donuts Franchise", price: 250000, image: "fotos/dunkin-donuts-franchise.png", owned: 0 },
+        { name: "Wendy's Franchise", price: 2000000, image: "fotos/wendys-franchise.png", owned: 0 },
+         { name: "Valve (Whole Company)", price: 8000000000, image: "fotos/valve-company2.png", owned: 0 },
+        { name: "Amazon (Whole Company)", price: 1500000000000, image: "fotos/amazon-company.png", owned: 0 },
+        { name: "Tesla (Whole Company)", price: 800000000000, image: "fotos/tesla-company.png", owned: 1 },
+        { name: "SpaceX (Whole Company)", price: 100000000000, image: "fotos/spacex-company.png", owned: 1 },
+        { name: "X (Whole Company)", price: 44000000000, image: "fotos/x-company.png", owned: 1 },
+        { name: "Netflix (Whole Company)", price: 250000000000, image: "fotos/netflix-company.png", owned: 0 },
+        { name: "Disney (Whole Company)", price: 350000000000, image: "fotos/disney-company.png", owned: 0 },
+        { name: "Apple (Whole Company)", price: 2500000000000, image: "fotos/apple-company.png", owned: 0 },
+        { name: "Google (Whole Company)", price: 1800000000000, image: "fotos/google-company.png", owned: 0 },
+        { name: "Microsoft (Whole Company)", price: 2000000000000, image: "fotos/microsoft-company.png", owned: 0 },
+        { name: "Meta (Whole Company)", price: 900000000000, image: "fotos/meta-company.png", owned: 0 }
+    ]
+};
+
+        // Format number with commas
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // Update balance display
+        function updateBalance() {
+            document.getElementById('balance').textContent = '$' + formatNumber(balance);
+        }
+
+        // Show category
+        function showCategory(categoryId) {
+            // Hide all category sections
+            document.querySelectorAll('.category-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show selected category
+            document.getElementById(categoryId).classList.add('active');
+
+            // Update active button
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`button[onclick="showCategory('${categoryId}')"]`).classList.add('active');
+
+            // Populate items if not already populated
+            const container = document.querySelector(`#${categoryId} > div`);
+            if (container.children.length === 0) {
+                populateItems(categoryId);
+            }
+        }
+
+        // Populate items for a category
+        function populateItems(categoryId) {
+            const container = document.querySelector(`#${categoryId} > div`);
+            container.innerHTML = '';
+
+            itemsData[categoryId].forEach((item, index) => {
+                const isCompany = item.name.includes('(Whole Company)');
+                const canBuyMore = !isCompany || item.owned === 0;
+                
+                const itemCard = document.createElement('div');
+                itemCard.className = 'item-card bg-black bg-opacity-30 rounded-xl p-4 border border-gray-700 transition-all duration-300';
+                itemCard.innerHTML = `
+                    <div class="h-48 overflow-hidden rounded-lg mb-4">
+                        <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">${item.name}</h3>
+                    <p class="text-lg text-yellow-400 mb-4">$${formatNumber(item.price)}</p>
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-gray-300">Owned: <span id="owned-${categoryId}-${index}">${item.owned}</span></span>
+                    </div>
+                    <div class="space-y-2">
+                        ${canBuyMore ? `
+                            <div class="flex items-center space-x-2">
+                                <input type="number" id="quantity-${categoryId}-${index}" value="1" min="1" max="${isCompany ? 1 : 999}" 
+                                    class="w-20 px-2 py-1 bg-gray-800 text-white rounded border border-gray-600 focus:border-yellow-400 focus:outline-none">
+                                <button onclick="buyItemWithQuantity('${categoryId}', ${index})" class="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded font-bold">
+                                    <i class="fas fa-cart-plus mr-2"></i> Buy
+                                </button>
+                            </div>
+                        ` : `
+                            <button disabled class="w-full bg-gray-600 text-gray-400 px-4 py-2 rounded font-bold cursor-not-allowed">
+                                <i class="fas fa-ban mr-2"></i> Already Owned
+                            </button>
+                        `}
+                        ${item.owned > 0 ? `
+                            <div class="flex items-center space-x-2">
+                                <input type="number" id="sell-quantity-${categoryId}-${index}" value="1" min="1" max="${item.owned}" 
+                                    class="w-20 px-2 py-1 bg-gray-800 text-white rounded border border-gray-600 focus:border-yellow-400 focus:outline-none">
+                                <button onclick="sellItemWithQuantity('${categoryId}', ${index})" class="flex-1 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-bold">
+                                    <i class="fas fa-minus-circle mr-2"></i> Sell
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                container.appendChild(itemCard);
+            });
+        }
+
+        // Buy item with quantity
+        function buyItemWithQuantity(categoryId, index) {
+            const item = itemsData[categoryId][index];
+            const quantityInput = document.getElementById(`quantity-${categoryId}-${index}`);
+            const quantity = parseInt(quantityInput.value) || 1;
+            const isCompany = item.name.includes('(Whole Company)');
+            
+            // Check if it's a company and already owned
+            if (isCompany && item.owned > 0) {
+                alert("You already own this company!");
+                return;
+            }
+            
+            // For companies, force quantity to 1
+            const actualQuantity = isCompany ? 1 : quantity;
+            const totalCost = item.price * actualQuantity;
+            
+            if (balance >= totalCost) {
+                balance -= totalCost;
+                item.owned += actualQuantity;
+                
+                // Add to purchased items
+                for (let i = 0; i < actualQuantity; i++) {
+                    purchasedItems.push({
+                        name: item.name,
+                        price: item.price,
+                        category: categoryId,
+                        date: new Date()
+                    });
+                }
+                
+                updateBalance();
+                populateItems(categoryId); // Refresh the category to update UI
+                
+                // Show success message
+                const message = actualQuantity > 1 ? 
+                    `Successfully bought ${actualQuantity} ${item.name}!` : 
+                    `Successfully bought ${item.name}!`;
+                showNotification(message, 'success');
+            } else {
+                alert(`Insufficient funds! You need $${formatNumber(totalCost)} but only have $${formatNumber(balance)}.`);
+            }
+        }
+        
+        // Sell item with quantity
+        function sellItemWithQuantity(categoryId, index) {
+            const item = itemsData[categoryId][index];
+            const quantityInput = document.getElementById(`sell-quantity-${categoryId}-${index}`);
+            const quantity = Math.min(parseInt(quantityInput.value) || 1, item.owned);
+            
+            if (quantity > 0) {
+                const totalRefund = item.price * quantity;
+                balance += totalRefund;
+                item.owned -= quantity;
+                
+                // Remove from purchased items
+                let removed = 0;
+                purchasedItems = purchasedItems.filter(purchasedItem => {
+                    if (purchasedItem.name === item.name && removed < quantity) {
+                        removed++;
+                        return false;
+                    }
+                    return true;
+                });
+                
+                updateBalance();
+                populateItems(categoryId); // Refresh the category to update UI
+                
+                // Show success message
+                const message = quantity > 1 ? 
+                    `Successfully sold ${quantity} ${item.name} for $${formatNumber(totalRefund)}!` : 
+                    `Successfully sold ${item.name} for $${formatNumber(totalRefund)}!`;
+                showNotification(message, 'info');
+            }
+        }
+        
+        // Show notification
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg text-white font-bold z-50 transition-all duration-300 ${
+                type === 'success' ? 'bg-green-600' : 'bg-blue-600'
+            }`;
+            notification.innerHTML = `<i class="fas fa-${type === 'success' ? 'check' : 'info'}-circle mr-2"></i>${message}`;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+        
+        // Legacy buy item function (kept for compatibility)
+        function buyItem(categoryId, index) {
+            buyItemWithQuantity(categoryId, index);
+        }
+
+        // Reset balance
+        function resetBalance() {
+            if (confirm("Are you sure you want to reset your balance and all purchases?")) {
+                balance = 260000000000;
+                purchasedItems = [];
+                
+                // Reset all owned counts
+                Object.keys(itemsData).forEach(category => {
+                    itemsData[category].forEach(item => {
+                        item.owned = 0;
+                    });
+                });
+                
+                updateBalance();
+                
+                // Re-populate all categories to reset owned counts
+                Object.keys(itemsData).forEach(category => {
+                    const container = document.querySelector(`#${category} > div`);
+                    if (container) container.innerHTML = '';
+                });
+                
+                // Show cars category by default
+                showCategory('cars');
+            }
+        }
+
+        // Show receipt modal
+        function showReceipt() {
+            const modal = document.getElementById('receiptModal');
+            const receiptItems = document.getElementById('receipt-items');
+            const receiptTotal = document.getElementById('receipt-total');
+            const receiptBalance = document.getElementById('receipt-balance');
+            const receiptDate = document.getElementById('receipt-date');
+            
+            // Set current date
+            const now = new Date();
+            receiptDate.textContent = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+            
+            // Calculate total spent
+            const totalSpent = purchasedItems.reduce((sum, item) => sum + item.price, 0);
+            receiptTotal.textContent = '$' + formatNumber(totalSpent);
+            receiptBalance.textContent = '$' + formatNumber(balance);
+            
+            // Populate items
+            receiptItems.innerHTML = '';
+            if (purchasedItems.length === 0) {
+                receiptItems.innerHTML = '<p class="text-center py-4">No purchases yet!</p>';
+            } else {
+                // Group items by category and count duplicates
+                const groupedItems = {};
+                purchasedItems.forEach(item => {
+                    const key = `${item.name}|${item.price}`;
+                    if (!groupedItems[key]) {
+                        groupedItems[key] = {
+                            name: item.name,
+                            price: item.price,
+                            count: 1,
+                            category: item.category
+                        };
+                    } else {
+                        groupedItems[key].count++;
+                    }
+                });
+                
+                // Add grouped items to receipt
+                Object.values(groupedItems).forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'flex justify-between py-1';
+                    itemElement.innerHTML = `
+                        <span>${item.name} (x${item.count})</span>
+                        <span>$${formatNumber(item.price * item.count)}</span>
+                    `;
+                    receiptItems.appendChild(itemElement);
+                });
+            }
+            
+            // Show modal
+            modal.classList.remove('hidden');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('receiptModal').classList.add('hidden');
+        }
+
+        // Print receipt
+        function printReceipt() {
+            const receiptContent = document.querySelector('.receipt').innerHTML;
+            const originalContent = document.body.innerHTML;
+            
+            document.body.innerHTML = `
+                <div class="p-8 receipt">
+                    <h2 class="text-2xl font-bold mb-4 text-center">SPEND MASK MONEY RECEIPT</h2>
+                    ${receiptContent}
+                </div>
+            `;
+            
+            window.print();
+            document.body.innerHTML = originalContent;
+            showReceipt(); // Re-open the modal
+        }
+
+        // Download receipt as PDF
+        function downloadReceipt() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Add title
+            doc.setFontSize(18);
+            doc.text('Spend MASK MONEY RECEIPT', 105, 20, { align: 'center' });
+            
+            // Add date
+            doc.setFontSize(12);
+            const now = new Date();
+            doc.text(`Date: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`, 105, 30, { align: 'center' });
+            
+            // Add line
+            doc.line(20, 35, 190, 35);
+            
+            // Add items
+            doc.setFontSize(12);
+            let y = 50;
+            
+            if (purchasedItems.length === 0) {
+                doc.text('No purchases yet!', 20, y);
+            } else {
+                // Group items as in the receipt modal
+                const groupedItems = {};
+                purchasedItems.forEach(item => {
+                    const key = `${item.name}|${item.price}`;
+                    if (!groupedItems[key]) {
+                        groupedItems[key] = {
+                            name: item.name,
+                            price: item.price,
+                            count: 1
+                        };
+                    } else {
+                        groupedItems[key].count++;
+                    }
+                });
+                
+                // Add items to PDF
+                Object.values(groupedItems).forEach(item => {
+                    doc.text(`${item.name} (x${item.count})`, 20, y);
+                    doc.text(`${formatNumber(item.price * item.count)}`, 180, y, { align: 'right' });
+                    y += 10;
+                });
+            }
+            
+            // Add totals
+            y += 20;
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            const totalSpent = purchasedItems.reduce((sum, item) => sum + item.price, 0);
+            doc.text(`TOTAL SPENT: ${formatNumber(totalSpent)}`, 20, y);
+            y += 10;
+            doc.text(`REMAINING BALANCE: ${formatNumber(balance)}`, 20, y);
+            
+            // Save the PDF
+            doc.save('SpendMaskMoney-Receipt.pdf');
+        }
+
+        // Share receipt
+        function shareReceipt() {
+            if (navigator.share) {
+                const totalSpent = purchasedItems.reduce((sum, item) => sum + item.price, 0);
+                
+                navigator.share({
+                    title: 'My Spending Receipt',
+                    text: `I've spent $${formatNumber(totalSpent)} of Elon Musk's $260 billion! Try it yourself.`,
+                    url: window.location.href
+                }).catch(err => {
+                    console.log('Error sharing:', err);
+                });
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                alert('Web Share API not supported in your browser. Try printing instead.');
+            }
+        }
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', () => {
+            // Tesla, SpaceX, and X are already owned but not shown in purchases/receipt
+            updateBalance();
+            showCategory('cars');
+        });
+    </script>
+</body>
+</html>
